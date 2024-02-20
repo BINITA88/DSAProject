@@ -85,7 +85,7 @@ public class MainMenu {
 
         loginUsernameTextfield = new JTextField();
         loginUsernameTextfield.setBounds(50,195,310,45);
-        loginUsernameTextfield.setForeground(Color.white);
+        loginUsernameTextfield.setForeground(Color.black);
         loginUsernameTextfield.setBorder(new LineBorder(Color.decode("#000000")));
         loginUsernameTextfield.setFont(new Font("Helvetica", Font.PLAIN, 20));
 
@@ -108,7 +108,7 @@ public class MainMenu {
 
         loginPasswordTextfield = new JPasswordField();
         loginPasswordTextfield.setBounds(50,295,310,45);
-        loginPasswordTextfield.setForeground(Color.white);
+        loginPasswordTextfield.setForeground(Color.black);
         loginPasswordTextfield.setBorder(new LineBorder(Color.decode("#000000")));
         loginPasswordTextfield.setFont(new Font("Helvetica", Font.PLAIN, 20));
 
@@ -128,53 +128,77 @@ public class MainMenu {
 
 
 
-        otpTextField.setFont(new Font("Helvetica",Font.BOLD,12));
-        otpTextField.setBounds(60,110,300,40);
-        otpTextField.setText("Enter OTP");
-        otpTextField.setBorder(new LineBorder(Color.gray,2));
+// Set font style, size, and weight for the OTP text field
+        otpTextField.setFont(new Font("Helvetica", Font.BOLD, 12));
 
+// Set the position and size of the OTP text field within the GUI
+        otpTextField.setBounds(60, 110, 300, 40);
+
+// Set default text for the OTP text field
+        otpTextField.setText("Enter OTP");
+
+// Set border style for the OTP text field
+        otpTextField.setBorder(new LineBorder(Color.gray, 2));
+
+// Add mouse listener to handle mouse enter event for the OTP text field
         otpTextField.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseEntered(MouseEvent e){
-                otpTextField.setBorder(new LineBorder(Color.black,2));
-                otpTextField.setBackground(new Color(239,239,239));
+            public void mouseEntered(MouseEvent e) {
+                // Change border color and background color when mouse enters the text field
+                otpTextField.setBorder(new LineBorder(Color.black, 2));
+                otpTextField.setBackground(new Color(239, 239, 239));
             }
-            public void mouseExited(MouseEvent e){
-                otpTextField.setBorder(new LineBorder(Color.gray,2));
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // Restore border color and background color when mouse exits the text field
+                otpTextField.setBorder(new LineBorder(Color.gray, 2));
                 otpTextField.setBackground(Color.white);
             }
-            public void mouseClicked(MouseEvent e){
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Clear the text field when it's clicked
                 otpTextField.setText("");
             }
         });
 
+// Create and configure the "Submit" button for OTP verification
         JButton otpSubmitButton = new JButton("Submit");
-        otpSubmitButton.setBounds(280,170,80,40);
+        otpSubmitButton.setBounds(280, 170, 80, 40);
         otpSubmitButton.setForeground(Color.white);
         otpSubmitButton.setBackground(Color.CYAN);
 
+// Add mouse listener to handle mouse enter, exit, and click events for the "Submit" button
         otpSubmitButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseEntered(MouseEvent e){
+            public void mouseEntered(MouseEvent e) {
+                // Change background color when mouse enters the button
                 otpSubmitButton.setBackground(new Color(0, 65, 130));
             }
-            public void mouseExited(MouseEvent e){
-                otpSubmitButton.setBackground(new Color(10,102,194));
-            }
-            public void mouseClicked(MouseEvent e){
-                System.out.println(otp);
-                if(otpTextField.getText().equals(Integer.toString(otp))){
-                    try {
-                        statement.execute("delete from usercredentials where username = '" + loginUsernameTextfield.getText() + "'");
 
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // Restore background color when mouse exits the button
+                otpSubmitButton.setBackground(new Color(10, 102, 194));
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Verify OTP entered by the user
+                System.out.println(otp);
+                if (otpTextField.getText().equals(Integer.toString(otp))) {
+                    try {
+                        // Delete user credentials if OTP is correct and switch to the signup panel
+                        statement.execute("delete from usercredentials where username = '" + loginUsernameTextfield.getText() + "'");
                         loginPanel.setVisible(false);
                         loginUsernameTextfield.setText("");
                         signupPanel.setVisible(true);
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
-                }
-                else{
+                } else {
+                    // Change the text field border color to indicate incorrect OTP
                     textFieldToRed(otpTextField);
                 }
             }
