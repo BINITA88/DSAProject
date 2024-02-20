@@ -17,7 +17,7 @@ package Question1;
 
 import java.util.Arrays;
 
-public class TimeToBuildEngine {
+public class EngineBuildTime {
     public static int timeToBuiltEngine(int[] engines, int splitCost) {
         int Engine = engines.length; //number of engine
         int[] dp = new int[Engine + 1]; // dp[i] represents the minimum time to build i engines

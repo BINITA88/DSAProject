@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-public class MazeVirtualGame {
+public class VirtualMazeGame {
     static class State {
         int x, y;
         String keys;

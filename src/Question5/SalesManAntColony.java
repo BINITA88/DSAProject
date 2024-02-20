@@ -4,19 +4,21 @@ package Question5;
 import java.util.Arrays;
 import java.util.Random;
 
-class AntColony {
-    private int[][] distanceMatrix;
-    private int numAnts;
-    private double[][] pheromoneMatrix;
-    private double[][] probabilities;
-    private int numCities;
-    private int[] bestTour;
-    private int bestTourLength;
-    private double evaporationRate;
-    private double alpha;
-    private double beta;
+class ColonyOfAnt {
+    private int[][] distanceMatrix; // Matrix representing distances between cities
+    private int numAnts; // Number of ants in the colony
+    private double[][] pheromoneMatrix; // Matrix representing pheromone levels on edges between cities
+    private double[][] probabilities; // Matrix representing probabilities of choosing each city
+    private int numCities; // Number of cities
+    private int[] bestTour; // Best tour found by the colony
+    private int bestTourLength; // Length of the best tour found
+    private double evaporationRate; // Rate at which pheromone evaporates
+    private double alpha; // Influence of pheromone on decision-making
+    private double beta; // Influence of distance on decision-making
 
-    public AntColony(int[][] distanceMatrix, int numAnts, double evaporationRate, double alpha, double beta) {
+
+    // Constructor to initialize AntColony object
+    public ColonyOfAnt(int[][] distanceMatrix, int numAnts, double evaporationRate, double alpha, double beta) {
         this.distanceMatrix = distanceMatrix;
         this.numAnts = numAnts;
         this.evaporationRate = evaporationRate;
@@ -38,7 +40,7 @@ class AntColony {
             }
         }
     }
-
+    // Method to solve the TSP using ant colony optimization
     public void solve(int maxIterations) {
         bestTourLength = Integer.MAX_VALUE;
         bestTour = new int[numCities];
@@ -51,7 +53,7 @@ class AntColony {
                 int currentCity = random.nextInt(numCities);
                 tour[0] = currentCity;
                 visited[currentCity] = true;
-
+                // Construct a tour for the ant
                 for (int i = 1; i < numCities; i++) {
                     calculateProbabilities(currentCity, visited);
                     int nextCity = selectNextCity(currentCity);
@@ -59,7 +61,7 @@ class AntColony {
                     visited[nextCity] = true;
                     currentCity = nextCity;
                 }
-
+                   // Calculate the length of the tour and update best tour if needed
                 int tourLength = calculateTourLength(tour);
                 if (tourLength < bestTourLength) {
                     bestTourLength = tourLength;
@@ -70,6 +72,7 @@ class AntColony {
             updatePheromones();
         }
     }
+    // Method to calculate the probabilities of choosing each city
 
     private void calculateProbabilities(int city, boolean[] visited) {
         double total = 0.0;
@@ -82,12 +85,12 @@ class AntColony {
                 probabilities[city][i] = 0.0;
             }
         }
-
+        // Normalize probabilities
         for (int i = 0; i < numCities; i++) {
             probabilities[city][i] /= total;
         }
     }
-
+    // Method to select the next city based on probabilities
     private int selectNextCity(int city) {
         double[] probabilities = this.probabilities[city];
         double r = Math.random();
@@ -100,7 +103,7 @@ class AntColony {
         }
         return -1;
     }
-
+    // Method to update pheromone levels
     private void updatePheromones() {
         // Evaporation
         for (int i = 0; i < numCities; i++) {
@@ -118,7 +121,7 @@ class AntColony {
             }
         }
     }
-
+    // Method to calculate the length of a tour
     private int calculateTourLength(int[] tour) {
         int length = 0;
         for (int i = 0; i < tour.length - 1; i++) {
@@ -127,7 +130,7 @@ class AntColony {
         length += distanceMatrix[tour[tour.length - 1]][tour[0]]; // Return to the starting city
         return length;
     }
-
+    // Getter method for the length of the best tour found
     public int getBestTourLength() {
         return bestTourLength;
     }
@@ -136,7 +139,8 @@ class AntColony {
         return bestTour;
     }
 }
-public class AntColonySalesMan {
+// Main class to demonstrate the usage of the AntColony class
+public class SalesManAntColony {
     public static void main(String[] args) {
         int[][] distanceMatrix = {
                 {0, 10, 15, 20},
@@ -144,12 +148,13 @@ public class AntColonySalesMan {
                 {15, 35, 0, 30},
                 {20, 25, 30, 0}
         };
+        // Define parameters for the ant colony optimization algorithm
         int numAnts = 5;
         double evaporationRate = 0.5;
         double alpha = 1.0;
         double beta = 2.0;
-
-        AntColony colony = new AntColony(distanceMatrix, numAnts, evaporationRate, alpha, beta);
+        // Create an instance of the AntColony class
+        ColonyOfAnt colony = new ColonyOfAnt(distanceMatrix, numAnts, evaporationRate, alpha, beta);
         colony.solve(1000); // Solve TSP with 1000 iterations
 
         int[] bestTour = colony.getBestTour();

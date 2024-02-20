@@ -18,7 +18,7 @@
 
 package Question1;
 
-public class MinimumCostDecoration {
+public class MinCostDecoration {
 
     public static int minCostToDecorateVenues(int[][] costs) {
         int numVenues = costs.length;
